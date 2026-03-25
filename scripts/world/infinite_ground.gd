@@ -12,6 +12,8 @@ var ground_texture: Texture2D
 
 func _ready() -> void:
 	ground_texture = load("res://assets/textures/world/ground.png")
+	if not ground_texture:
+		ground_texture = load("res://assets/icons/icon.svg")
 	if ground_texture:
 		tile_width = float(ground_texture.get_width()) * tile_scale.x
 

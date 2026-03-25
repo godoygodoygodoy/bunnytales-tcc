@@ -3,6 +3,8 @@ extends Sprite2D
 ## Background fixo que se ajusta automaticamente ao tamanho da tela
 
 func _ready() -> void:
+	if not texture:
+		texture = load("res://assets/icons/icon.svg")
 	call_deferred("_adjust_scale")
 
 func _adjust_scale() -> void:
