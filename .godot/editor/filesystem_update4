@@ -1,0 +1,5 @@
+res://character_body_2d_2.gd
+res://run_animation.tres
+res://game_world.gd
+res://hud.gd
+res://infinite_ground.gd

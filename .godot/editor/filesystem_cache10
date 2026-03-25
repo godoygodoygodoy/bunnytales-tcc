@@ -1,0 +1,30 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1772568887
+background1.png::CompressedTexture2D::676651524254693042::1772567125::1772567161::1::::<><><>0<>0<>487c20b6711d8b09f15ec9e5a0e87ac7<>res://.godot/imported/background1.png-1bda85794aa425f689dbcd5c83f6a789.ctex::
+background.gd::GDScript::3701934385118518671::1772568218::0::1::::<>Sprite2D<><>0<>0<><>::
+bunny.png::CompressedTexture2D::6577374612962317477::1772040460::1772040460::1::::<><><>0<>0<>47a4f063e7f0eb1785cb8d0d54996d3c<>res://.godot/imported/bunny.png-e23606c57d59402d46f8f11b8e3b74b2.ctex::
+character_body_2d.gd::GDScript::2811228954816546038::1772040460::0::1::::<>CharacterBody2D<><>0<>0<><>::
+character_body_2d_2.gd::GDScript::8208567416073282478::1772569040::0::1::::<>CharacterBody2D<><>0<>0<><>::
+chão-temp.png::CompressedTexture2D::573916077158780566::1772040460::1772040460::1::::<><><>0<>0<>290545eb11779749dec907f795538046<>res://.godot/imported/chão-temp.png-049d756df8ab703a7d7bee32a3d3fe4b.ctex::
+cloud.gd::GDScript::1118462658068044246::1772051471::0::1::::<>Node2D<><>0<>0<><>::
+coelho grande pulando-Sheet.png::CompressedTexture2D::1660464841262093074::1772566588::1772566695::1::::<><><>0<>0<>61b7cd0e1df9b6528c7799c583360b4b<>res://.godot/imported/coelho grande pulando-Sheet.png-5c01a924c3fa73c32d0b8da8fbb31c8d.ctex::
+coelho_afk-Sheet.png::CompressedTexture2D::9167651445587054939::1772566593::1772566695::1::::<><><>0<>0<>aa2b46ea5fc8237d1cb96ff6f723f305<>res://.godot/imported/coelho_afk-Sheet.png-641d997dab466cd47e083c1a736fe872.ctex::
+coelho_correndo.png::CompressedTexture2D::4079393021270183544::1772566583::1772567161::1::::<><><>0<>0<>f4fd8473754c62228584a5c1a89b2f1c<>res://.godot/imported/coelho_correndo.png-5f2125375a41e8d6e38a87d63aa009c7.ctex::
+Coelho_DASH_Sheet.png::CompressedTexture2D::5812105842420591465::1772568887::1772569100::1::::<><><>0<>0<>f416d1eba2a81012331ebb83531c1965<>res://.godot/imported/Coelho_DASH_Sheet.png-88ceb61252f1d38e768a2a48c49b3465.ctex::
+enemy.gd::GDScript::3109079645190929184::1772051598::0::1::::<>CharacterBody2D<><>0<>0<><>::
+fallen_wood.png::CompressedTexture2D::6739265491849628714::1772567537::1772567768::1::::<><><>0<>0<>ad91b9bcbcd65f4774559f672790a8cc<>res://.godot/imported/fallen_wood.png-1731e564b5cba50e76b9246b2ef54b04.ctex::
+galaxy_attack.gd::GDScript::1749058833609027280::1772051598::0::1::::<>Area2D<><>0<>0<><>::
+galaxy_attack.png::CompressedTexture2D::5327774788977039717::1772050777::1772051047::1::::<><><>0<>0<>a5fdeefdcfe8c84d23d7c53c1b69c1aa<>res://.godot/imported/galaxy_attack.png-d55b56681e5e3486974cc07f21d1ba41.ctex::
+game_world.gd::GDScript::2991716116036633351::1772569040::0::1::::<>Node2D<><>0<>0<><>::
+grass1.png::CompressedTexture2D::3090159959533472813::1772567321::1772567768::1::::<><><>0<>0<>8dafaf5562e20fda7467086f0c4cf27c<>res://.godot/imported/grass1.png-f8b079c2adb7d9340c13898e65d98eb2.ctex::
+grass.png::CompressedTexture2D::864565637924460724::1772567306::1772567768::1::::<><><>0<>0<>b66fc56f623c5626564abe843b5561b9<>res://.godot/imported/grass.png-79cf597cc1adecdff9d12adae9606f9b.ctex::
+ground.png::CompressedTexture2D::7257483296351429051::1772040460::1772040460::1::::<><><>0<>0<>5c9d48961aabfb93d85b2834046b8529<>res://.godot/imported/ground.png-19dd19062ae149a099889071e7b87881.ctex::
+hud.gd::GDScript::7332641262187939600::1772568589::0::1::::<>CanvasLayer<><>0<>0<><>::
+icon.svg::CompressedTexture2D::3785679063988728064::1772040460::1772040460::1::::<><><>0<>0<>4433e89025a1ed39c7fb6d096a9a3565<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+infinite_ground.gd::GDScript::7983388552133784949::1772568251::0::1::::<>StaticBody2D<><>0<>0<><>::
+melee_attack.gd::GDScript::1514534446797802260::1772051598::0::1::::<>Area2D<><>0<>0<><>::
+node_2d.tscn::PackedScene::9025954188714075011::1772568239::0::1::::<><><>0<>0<><>::uid://do7j52nvjmmi5::::res://character_body_2d_2.gd<>uid://bwvnc8yqbn7r8::::res://run_animation.tres<>uid://dl0hii8p22fm8::::res://infinite_ground.gd<>uid://bivhelg2t50e2::::res://game_world.gd<>uid://dcp8sa873faku::::res://hud.gd
+power_bar.png::CompressedTexture2D::6315161742085973781::1772051716::1772052140::1::::<><><>0<>0<>5b5e6cdb5fe879722024cbf2ef9add47<>res://.godot/imported/power_bar.png-7513de1956317cb95abd3f775016abd0.ctex::
+power_bar_galaxy.png::CompressedTexture2D::2833407925749562802::1772051595::1772051601::1::::<><><>0<>0<>7bc2af023f1450128d69b88374489471<>res://.godot/imported/power_bar_galaxy.png-b77c80759683a5b69e58b310c11c24ba.ctex::
+projectile.gd::GDScript::3725737983377327525::1772051471::0::1::::<>Area2D<><>0<>0<><>::
+run_animation.tres::SpriteFrames::3974721840133555035::1772569040::0::1::::<><><>0<>0<><>::uid://byedaifh5uq2c::::res://coelho_correndo.png<>uid://xwlu4awrbl11::::res://coelho grande pulando-Sheet.png<>uid://d3u446fru45cx::::res://coelho_afk-Sheet.png

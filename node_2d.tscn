@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://d1uie8xbamq88"]
+
+[ext_resource type="Texture2D" path="res://background1.png" id="1_background"]
+[ext_resource type="Script" path="res://background.gd" id="1_bgscript"]
+[ext_resource type="Script" path="res://Player.gd" id="2_epypp"]
+[ext_resource type="SpriteFrames" uid="uid://bwvnc8yqbn7r8" path="res://run_animation.tres" id="3_0hol4"]
+[ext_resource type="Script" uid="uid://dl0hii8p22fm8" path="res://infinite_ground.gd" id="4_ground"]
+[ext_resource type="Script" uid="uid://bivhelg2t50e2" path="res://game_world.gd" id="5_gworld"]
+[ext_resource type="Script" uid="uid://dcp8sa873faku" path="res://hud.gd" id="6_hud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hol4"]
+size = Vector2(44, 99.5)
+
+[node name="Node2D" type="Node2D" unique_id=1355484640]
+script = ExtResource("5_gworld")
+
+[node name="HUDLayer" type="CanvasLayer" parent="." unique_id=200000001]
+script = ExtResource("6_hud")
+
+[node name="InfiniteGround" type="StaticBody2D" parent="." unique_id=1108747991]
+script = ExtResource("4_ground")
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="." unique_id=976841959]
+script = ExtResource("2_epypp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D2" unique_id=1202914921]
+position = Vector2(75.500015, 44.500008)
+scale = Vector2(1.9899998, 1.9699996)
+sprite_frames = ExtResource("3_0hol4")
+animation = &"run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D2" unique_id=41686002]
+position = Vector2(53, 72)
+shape = SubResource("RectangleShape2D_0hol4")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D2" unique_id=569333311]
+position = Vector2(56, 70)
+
+[node name="Background" type="Sprite2D" parent="CharacterBody2D2/Camera2D"]
+texture = ExtResource("1_background")
+script = ExtResource("1_bgscript")
+z_index = -100
