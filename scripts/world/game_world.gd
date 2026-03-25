@@ -24,6 +24,12 @@ var _player_in_checkpoint: bool = false
 var _shop_open: bool = false
 var _choice_pending: bool = false
 var _final_resolved: bool = false
+var _checkpoint_save := {
+	"phase": 1,
+	"paths": [],
+	"xp": 0,
+	"score": 0
+}
 
 var fallen_wood_tex: Texture2D
 var grass_tex: Texture2D
@@ -93,6 +99,8 @@ func _init_systems() -> void:
 	_level_manager.route_finished.connect(_on_route_finished)
 	_shop_system.purchase_succeeded.connect(_on_purchase_succeeded)
 	_shop_system.purchase_failed.connect(_on_purchase_failed)
+	if player.has_signal("player_respawned"):
+		player.player_respawned.connect(_on_player_respawned)
 
 
 func _connect_hud() -> void:
@@ -263,6 +271,10 @@ func _on_route_finished(paths: Array) -> void:
 
 func _on_checkpoint_activated(checkpoint: Area2D) -> void:
 	_active_checkpoint = checkpoint
+	_checkpoint_save["phase"] = _level_manager.current_phase
+	_checkpoint_save["paths"] = _level_manager.get_paths()
+	_checkpoint_save["xp"] = _xp_system.xp
+	_checkpoint_save["score"] = _xp_system.score
 	_show_message("Checkpoint %d ativo." % checkpoint.checkpoint_id, 1.5)
 
 
@@ -289,3 +301,13 @@ func _on_purchase_failed(_item_id: String, reason: String) -> void:
 func _show_message(text: String, duration: float = 0.0) -> void:
 	if _hud and _hud.has_method("show_message"):
 		_hud.show_message(text, duration)
+
+
+func _on_player_respawned() -> void:
+	# Garante estado consistente após morte/respawn no checkpoint.
+	if _level_manager.has_method("restore_progress"):
+		_level_manager.restore_progress(_checkpoint_save["paths"], int(_checkpoint_save["phase"]))
+	_xp_system.xp = int(_checkpoint_save["xp"])
+	_xp_system.score = int(_checkpoint_save["score"])
+	_on_xp_changed(_xp_system.xp)
+	_on_score_changed(_xp_system.score)

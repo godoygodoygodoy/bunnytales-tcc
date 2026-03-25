@@ -38,3 +38,9 @@ func get_combination_key() -> String:
 	if chosen_paths.size() < PHASE_COUNT:
 		return "incomplete"
 	return "%d-%d-%d" % [chosen_paths[0] + 1, chosen_paths[1] + 1, chosen_paths[2] + 1]
+
+
+func restore_progress(paths: Array[int], phase: int) -> void:
+	chosen_paths = paths.duplicate()
+	current_phase = clamp(phase, 1, PHASE_COUNT + 1)
+	emit_signal("phase_changed", current_phase)
