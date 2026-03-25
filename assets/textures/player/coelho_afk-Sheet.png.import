@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3u446fru45cx"
-path="res://.godot/imported/coelho_afk-Sheet.png-641d997dab466cd47e083c1a736fe872.ctex"
+path="res://.godot/imported/coelho_afk-Sheet.png-cabb84c097f7c61aff934dd41ba4ae3c.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/player/coelho_afk-Sheet.png"
-dest_files=["res://.godot/imported/coelho_afk-Sheet.png-641d997dab466cd47e083c1a736fe872.ctex"]
+dest_files=["res://.godot/imported/coelho_afk-Sheet.png-cabb84c097f7c61aff934dd41ba4ae3c.ctex"]
 
 [params]
 

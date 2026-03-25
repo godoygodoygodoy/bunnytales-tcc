@@ -14,6 +14,10 @@ var _score_label : Label
 var _xp_label    : Label
 var _phase_label : Label
 var _message_label : Label
+var _shop_panel: Panel
+var _shop_title: Label
+var _shop_xp: Label
+var _shop_items: Label
 var _player      : Node = null
 var _slots       := {}          # key -> TextureRect
 var _root        : Control
@@ -96,6 +100,34 @@ func _build_ui() -> void:
 	_message_label.text = ""
 	_message_label.add_theme_color_override("font_color", Color(0.98, 0.95, 0.75))
 
+	_build_shop_menu(vp)
+
+
+func _build_shop_menu(vp: Vector2) -> void:
+	_shop_panel = Panel.new()
+	_shop_panel.visible = false
+	_shop_panel.position = Vector2(vp.x - 355.0, 16.0)
+	_shop_panel.size = Vector2(340.0, 230.0)
+	_root.add_child(_shop_panel)
+
+	_shop_title = Label.new()
+	_shop_title.position = Vector2(12.0, 8.0)
+	_shop_title.text = "LOJA"
+	_shop_title.add_theme_font_size_override("font_size", 20)
+	_shop_panel.add_child(_shop_title)
+
+	_shop_xp = Label.new()
+	_shop_xp.position = Vector2(12.0, 36.0)
+	_shop_xp.text = "XP: 0"
+	_shop_panel.add_child(_shop_xp)
+
+	_shop_items = Label.new()
+	_shop_items.position = Vector2(12.0, 62.0)
+	_shop_items.text = "[1] Especial 180 XP\n[2] Dash 120 XP\n[3] Pulo extra 120 XP\n[4] +1 HP 90 XP\n[5] +10% Dano 140 XP\n\nENTER: proxima fase"
+	_shop_items.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_shop_items.size = Vector2(315.0, 160.0)
+	_shop_panel.add_child(_shop_items)
+
 
 # ── Label helper ────────────────────────────────────────────────────────────
 func _label(pos: Vector2, font_size: int) -> Label:
@@ -166,3 +198,21 @@ func show_message(text: String, duration: float = 0.0) -> void:
 		await get_tree().create_timer(duration).timeout
 		if is_instance_valid(self) and _message_label.text == text:
 			_message_label.text = ""
+
+
+func show_shop_menu(current_xp: int) -> void:
+	if not _shop_panel:
+		return
+	_shop_panel.visible = true
+	if _shop_xp:
+		_shop_xp.text = "XP: %d" % current_xp
+
+
+func hide_shop_menu() -> void:
+	if _shop_panel:
+		_shop_panel.visible = false
+
+
+func update_shop_xp(current_xp: int) -> void:
+	if _shop_panel and _shop_panel.visible and _shop_xp:
+		_shop_xp.text = "XP: %d" % current_xp

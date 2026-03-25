@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="bunny and tales"
-run/main_scene="uid://d1uie8xbamq88"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://assets/icons/icon.svg"
+
+[autoload]
+
+GameConfig="*res://scripts/systems/GameConfig.gd"
 
 [input]
 

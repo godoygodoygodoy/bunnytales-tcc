@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://co2osfm51213r"
-path="res://.godot/imported/Coelho_DASH_Sheet.png-88ceb61252f1d38e768a2a48c49b3465.ctex"
+path="res://.godot/imported/Coelho_DASH_Sheet.png-5776a2bdd35f5d66e9aa4f81df37dea6.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/player/Coelho_DASH_Sheet.png"
-dest_files=["res://.godot/imported/Coelho_DASH_Sheet.png-88ceb61252f1d38e768a2a48c49b3465.ctex"]
+dest_files=["res://.godot/imported/Coelho_DASH_Sheet.png-5776a2bdd35f5d66e9aa4f81df37dea6.ctex"]
 
 [params]
 

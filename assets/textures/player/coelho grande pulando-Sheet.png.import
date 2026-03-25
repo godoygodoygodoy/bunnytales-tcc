@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://xwlu4awrbl11"
-path="res://.godot/imported/coelho grande pulando-Sheet.png-5c01a924c3fa73c32d0b8da8fbb31c8d.ctex"
+path="res://.godot/imported/coelho grande pulando-Sheet.png-87d1baee6326d22b576c95c5872186b4.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/player/coelho grande pulando-Sheet.png"
-dest_files=["res://.godot/imported/coelho grande pulando-Sheet.png-5c01a924c3fa73c32d0b8da8fbb31c8d.ctex"]
+dest_files=["res://.godot/imported/coelho grande pulando-Sheet.png-87d1baee6326d22b576c95c5872186b4.ctex"]
 
 [params]
 

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/shop_world.gd" id="1_shop"]
+[ext_resource type="Script" path="res://scripts/world/hud.gd" id="2_hud"]
+[ext_resource type="Script" path="res://scripts/entities/Player.gd" id="3_player"]
+[ext_resource type="SpriteFrames" path="res://resources/run_animation.tres" id="4_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(44, 99.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(6000, 220)
+
+[node name="ShopWorld" type="Node2D"]
+script = ExtResource("1_shop")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -1200.0
+offset_top = -900.0
+offset_right = 4000.0
+offset_bottom = 1800.0
+color = Color(0.133333, 0.0980392, 0.0784314, 1)
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+script = ExtResource("2_hud")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(0, 494)
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="."]
+position = Vector2(120, 260)
+script = ExtResource("3_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D2"]
+position = Vector2(75.500015, 44.500008)
+scale = Vector2(1.9899998, 1.9699996)
+sprite_frames = ExtResource("4_frames")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D2"]
+position = Vector2(53, 72)
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D2"]
+position = Vector2(56, 70)
+enabled = true

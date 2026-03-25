@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://igakw6efbjvq"
-path="res://.godot/imported/chão-temp.png-049d756df8ab703a7d7bee32a3d3fe4b.ctex"
+path="res://.godot/imported/chão-temp.png-5a81c5e7f15aaf845ec29f1e5f306a8d.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/world/chão-temp.png"
-dest_files=["res://.godot/imported/chão-temp.png-049d756df8ab703a7d7bee32a3d3fe4b.ctex"]
+dest_files=["res://.godot/imported/chão-temp.png-5a81c5e7f15aaf845ec29f1e5f306a8d.ctex"]
 
 [params]
 

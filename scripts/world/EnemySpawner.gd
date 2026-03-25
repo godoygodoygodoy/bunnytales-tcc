@@ -10,6 +10,7 @@ signal enemy_spawned(enemy: CharacterBody2D)
 
 var player: Node2D = null
 var current_phase: int = 1
+var difficulty_phase_bonus: int = 0
 var _spawn_timer: float = 0.0
 
 var EnemyScript = preload("res://scripts/entities/enemy.gd")
@@ -20,7 +21,11 @@ func setup(target_player: Node2D) -> void:
 
 
 func set_phase(phase: int) -> void:
-	current_phase = max(1, phase)
+	current_phase = maxi(1, phase)
+
+
+func set_difficulty_bonus(bonus: int) -> void:
+	difficulty_phase_bonus = clampi(bonus, -1, 2)
 
 
 func _process(delta: float) -> void:
@@ -45,7 +50,8 @@ func spawn_enemy(position: Vector2, enemy_type: String = "melee") -> CharacterBo
 	var enemy: CharacterBody2D = EnemyScript.new()
 	enemy.global_position = position
 	if enemy.has_method("configure_for_phase"):
-		enemy.configure_for_phase(current_phase, enemy_type)
+		var effective_phase: int = maxi(1, current_phase + difficulty_phase_bonus)
+		enemy.configure_for_phase(effective_phase, enemy_type)
 	add_child(enemy)
 	emit_signal("enemy_spawned", enemy)
 	return enemy

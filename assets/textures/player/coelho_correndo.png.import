@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byedaifh5uq2c"
-path="res://.godot/imported/coelho_correndo.png-5f2125375a41e8d6e38a87d63aa009c7.ctex"
+path="res://.godot/imported/coelho_correndo.png-07579de9770c5a724d341f588c621544.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://assets/textures/player/coelho_correndo.png"
-dest_files=["res://.godot/imported/coelho_correndo.png-5f2125375a41e8d6e38a87d63aa009c7.ctex"]
+dest_files=["res://.godot/imported/coelho_correndo.png-07579de9770c5a724d341f588c621544.ctex"]
 
 [params]
 

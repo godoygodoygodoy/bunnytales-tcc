@@ -1,5 +1,12 @@
-res://character_body_2d_2.gd
-res://run_animation.tres
-res://game_world.gd
-res://hud.gd
-res://infinite_ground.gd
+res://scripts/entities/enemy.gd
+res://scripts/systems/LevelManager.gd
+res://scripts/world/EnemySpawner.gd
+res://scripts/world/game_world.gd
+res://scripts/systems/GameConfig.gd
+res://scripts/ui/MainMenu.gd
+res://scripts/world/hud.gd
+res://scripts/entities/Player.gd
+res://scripts/systems/AbilitySystem.gd
+res://scripts/systems/ShopSystem.gd
+res://scripts/systems/XPSystem.gd
+res://scripts/world/PhaseCrater.gd

@@ -16,7 +16,7 @@ var unlocked_attacks := {
 
 var unlocked_movements := {
 	"double_jump": true,
-	"dash": true
+	"dash": false
 }
 
 var permanent_damage_bonus: float = 0.0
@@ -81,3 +81,22 @@ func try_activate_sacrifice_buff(player: Node) -> bool:
 	_buff_timer = SACRIFICE_DURATION
 	emit_signal("strength_changed", get_damage_multiplier())
 	return true
+
+
+func export_state() -> Dictionary:
+	return {
+		"unlocked_attacks": unlocked_attacks.duplicate(true),
+		"unlocked_movements": unlocked_movements.duplicate(true),
+		"permanent_damage_bonus": permanent_damage_bonus
+	}
+
+
+func import_state(state: Dictionary) -> void:
+	if state.has("unlocked_attacks"):
+		unlocked_attacks = state["unlocked_attacks"].duplicate(true)
+	if state.has("unlocked_movements"):
+		unlocked_movements = state["unlocked_movements"].duplicate(true)
+	permanent_damage_bonus = float(state.get("permanent_damage_bonus", permanent_damage_bonus))
+	temporary_damage_bonus = 0.0
+	_buff_timer = 0.0
+	emit_signal("strength_changed", get_damage_multiplier())

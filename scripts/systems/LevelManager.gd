@@ -10,6 +10,18 @@ const PATHS_PER_PHASE: int = 3
 var current_phase: int = 1
 var chosen_paths: Array[int] = []
 
+var phase_kinds := {
+	1: "pontos",
+	2: "estrategia",
+	3: "tempo"
+}
+
+var phase_available := {
+	1: true,
+	2: false,
+	3: false
+}
+
 
 func choose_path(path_index: int) -> bool:
 	if current_phase > PHASE_COUNT:
@@ -44,3 +56,17 @@ func restore_progress(paths: Array[int], phase: int) -> void:
 	chosen_paths = paths.duplicate()
 	current_phase = clamp(phase, 1, PHASE_COUNT + 1)
 	emit_signal("phase_changed", current_phase)
+
+
+func start_from_phase(phase: int) -> void:
+	current_phase = clamp(phase, 1, PHASE_COUNT)
+	chosen_paths.clear()
+	emit_signal("phase_changed", current_phase)
+
+
+func is_phase_available(phase: int) -> bool:
+	return bool(phase_available.get(phase, false))
+
+
+func get_phase_kind(phase: int) -> String:
+	return String(phase_kinds.get(phase, "desconhecido"))

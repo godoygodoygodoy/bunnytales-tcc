@@ -105,9 +105,12 @@ func configure_for_phase(phase: int, type: String = "melee") -> void:
 
 
 func _spawn_ranged_projectile(player: Node2D) -> void:
-	var projectile := load("res://scripts/entities/enemy_projectile.gd").new()
+	var projectile: Area2D = load("res://scripts/entities/enemy_projectile.gd").new()
 	projectile.global_position = global_position + Vector2(0.0, -16.0)
-	projectile.direction = (player.global_position - global_position).normalized()
+	var x_dir: float = sign(player.global_position.x - global_position.x)
+	if x_dir == 0.0:
+		x_dir = -1.0 if _sprite and _sprite.flip_h else 1.0
+	projectile.direction = Vector2(x_dir, 0.0)
 	projectile.damage = 1 + max(phase_difficulty - 1, 0)
 	get_parent().add_child(projectile)
 

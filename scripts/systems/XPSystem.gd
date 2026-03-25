@@ -26,3 +26,17 @@ func spend_xp(amount: int) -> bool:
 	xp -= amount
 	emit_signal("xp_changed", xp)
 	return true
+
+
+func export_state() -> Dictionary:
+	return {
+		"xp": xp,
+		"score": score
+	}
+
+
+func import_state(state: Dictionary) -> void:
+	xp = int(state.get("xp", xp))
+	score = int(state.get("score", score))
+	emit_signal("xp_changed", xp)
+	emit_signal("score_changed", score)

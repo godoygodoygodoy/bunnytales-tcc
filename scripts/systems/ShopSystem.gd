@@ -45,8 +45,12 @@ func _apply_item(item_id: String, player: Node, ability_system: Node) -> bool:
 		"unlock_special":
 			return ability_system.unlock_attack("special")
 		"unlock_dash":
+			var unlocked := false
+			if ability_system and ability_system.has_method("unlock_movement"):
+				unlocked = ability_system.unlock_movement("dash")
 			if player and player.has_method("improve_dash"):
-				return player.improve_dash()
+				player.improve_dash()
+			return unlocked
 		"unlock_double_jump":
 			if player and player.has_method("unlock_extra_jump"):
 				return player.unlock_extra_jump()

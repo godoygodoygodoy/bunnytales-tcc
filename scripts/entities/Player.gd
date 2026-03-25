@@ -2,7 +2,6 @@ extends CharacterBody2D
 
 signal hp_changed(current_hp: int, max_hp: int)
 signal player_died()
-signal player_respawned()
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _col_shape: CollisionShape2D = $CollisionShape2D
@@ -38,7 +37,6 @@ var _dash_upgrade_level: int = 0
 var _extra_jump_unlocked: bool = false
 
 var _is_dead: bool = false
-var _checkpoint_position: Vector2
 
 var ability_system: Node = null
 var xp_system: Node = null
@@ -55,17 +53,12 @@ func _ready() -> void:
 			frames.add_frame(anim_name, icon_tex)
 		animated_sprite.sprite_frames = frames
 		animated_sprite.play("idle")
-	_checkpoint_position = global_position
 	emit_signal("hp_changed", hp, max_hp)
 
 
 func setup_systems(new_ability_system: Node, new_xp_system: Node) -> void:
 	ability_system = new_ability_system
 	xp_system = new_xp_system
-
-
-func set_checkpoint(pos: Vector2) -> void:
-	_checkpoint_position = pos
 
 
 func increase_max_hp(amount: int) -> void:
@@ -209,19 +202,10 @@ func _die() -> void:
 	emit_signal("player_died")
 	animated_sprite.modulate = Color(0.5, 0.5, 0.5, 0.5)
 	set_physics_process(false)
-	await get_tree().create_timer(1.3).timeout
+	await get_tree().create_timer(1.0).timeout
 	if not is_instance_valid(self):
 		return
-
-	hp = max_hp
-	velocity = Vector2.ZERO
-	global_position = _checkpoint_position
-	animated_sprite.modulate = Color.WHITE
-	inv_timer = INV_DURATION
-	_is_dead = false
-	emit_signal("hp_changed", hp, max_hp)
-	emit_signal("player_respawned")
-	set_physics_process(true)
+	get_tree().reload_current_scene()
 
 
 func _blink() -> void:
@@ -296,3 +280,19 @@ func _get_max_jumps() -> int:
 	if ability_system.has_method("is_movement_unlocked") and not ability_system.is_movement_unlocked("double_jump"):
 		return 1
 	return jumps
+
+
+func export_progress_state() -> Dictionary:
+	return {
+		"max_hp": max_hp,
+		"dash_upgrade_level": _dash_upgrade_level,
+		"extra_jump_unlocked": _extra_jump_unlocked
+	}
+
+
+func import_progress_state(state: Dictionary) -> void:
+	max_hp = int(state.get("max_hp", max_hp))
+	_dash_upgrade_level = int(state.get("dash_upgrade_level", _dash_upgrade_level))
+	_extra_jump_unlocked = bool(state.get("extra_jump_unlocked", _extra_jump_unlocked))
+	hp = max_hp
+	emit_signal("hp_changed", hp, max_hp)
