@@ -20,6 +20,13 @@ var _root        : Control
 var _built       : bool = false
 
 
+func _safe_texture(path: String) -> Texture2D:
+	var tex: Texture2D = load(path)
+	if tex:
+		return tex
+	return load("res://assets/icons/icon.svg")
+
+
 func _ready() -> void:
 	layer = 10
 	_root = Control.new()
@@ -50,8 +57,8 @@ func _build_ui() -> void:
 	_phase_label.text = "Fase: 1"
 
 	# Icones de ataque (centralizados no rodape)
-	var tex_q : Texture2D = load("res://assets/textures/ui/power_bar_galaxy.png")
-	var tex_d : Texture2D = load("res://assets/textures/ui/power_bar.png")
+	var tex_q : Texture2D = _safe_texture("res://assets/textures/ui/power_bar_galaxy.png")
+	var tex_d : Texture2D = _safe_texture("res://assets/textures/ui/power_bar.png")
 	var keys_list : Array = ["Q", "E", "R"]
 	var textures := { "Q": tex_q, "E": tex_d, "R": tex_d }
 
@@ -111,7 +118,7 @@ func _process(_delta: float) -> void:
 
 	# HP
 	var hp     : int = int(_player.get("hp"))
-	var hp_max : int = int(_player.get("HP_MAX"))
+	var hp_max : int = int(_player.get("max_hp"))
 	if hp >= 0 and hp_max > 0:
 		var hearts := ""
 		for i in range(hp_max):

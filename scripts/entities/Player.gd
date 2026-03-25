@@ -46,6 +46,15 @@ var xp_system: Node = null
 
 func _ready() -> void:
 	add_to_group("player")
+	# Fallback visual: se não houver animações, usa o ícone padrão do Godot.
+	if animated_sprite and (animated_sprite.sprite_frames == null or not animated_sprite.sprite_frames.has_animation("idle")):
+		var icon_tex: Texture2D = load("res://assets/icons/icon.svg")
+		var frames := SpriteFrames.new()
+		for anim_name in ["idle", "run", "jump", "dash"]:
+			frames.add_animation(anim_name)
+			frames.add_frame(anim_name, icon_tex)
+		animated_sprite.sprite_frames = frames
+		animated_sprite.play("idle")
 	_checkpoint_position = global_position
 	emit_signal("hp_changed", hp, max_hp)
 

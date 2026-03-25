@@ -25,9 +25,16 @@ var _shop_open: bool = false
 var _choice_pending: bool = false
 var _final_resolved: bool = false
 
-var fallen_wood_tex  = preload("res://assets/textures/world/fallen_wood.png")
-var grass_tex        = preload("res://assets/textures/world/grass.png")
-var grass1_tex       = preload("res://assets/textures/world/grass1.png")
+var fallen_wood_tex: Texture2D
+var grass_tex: Texture2D
+var grass1_tex: Texture2D
+
+
+func _safe_texture(path: String) -> Texture2D:
+	var tex: Texture2D = load(path)
+	if tex:
+		return tex
+	return load("res://assets/icons/icon.svg")
 
 
 func _ready() -> void:
@@ -35,6 +42,10 @@ func _ready() -> void:
 	_hud   = get_node_or_null("HUDLayer")
 	if not player:
 		return
+
+	fallen_wood_tex = _safe_texture("res://assets/textures/world/fallen_wood.png")
+	grass_tex = _safe_texture("res://assets/textures/world/grass.png")
+	grass1_tex = _safe_texture("res://assets/textures/world/grass1.png")
 
 	_init_systems()
 	_create_checkpoints()
@@ -246,7 +257,8 @@ func _on_route_finished(paths: Array) -> void:
 		return
 	_final_resolved = true
 	var ending: Dictionary = _ending_manager.resolve_ending(paths)
-	_show_message("%s: %s" % [ending.title, ending.description])
+	var combo_key: String = _level_manager.get_combination_key()
+	_show_message("Rota %s | %s: %s" % [combo_key, ending.title, ending.description])
 
 
 func _on_checkpoint_activated(checkpoint: Area2D) -> void:

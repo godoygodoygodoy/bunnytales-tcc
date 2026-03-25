@@ -2,11 +2,22 @@ extends Node
 
 signal ending_resolved(ending_id: int, title: String, description: String)
 
+var last_paths: Array[int] = []
+var last_combination_key: String = ""
+
 
 func resolve_ending(paths: Array[int]) -> Dictionary:
+	last_paths = paths.duplicate()
+	last_combination_key = _build_combination_key(paths)
 	var ending := _compute_ending(paths)
 	emit_signal("ending_resolved", ending.id, ending.title, ending.description)
 	return ending
+
+
+func _build_combination_key(paths: Array[int]) -> String:
+	if paths.size() < 3:
+		return "incomplete"
+	return "%d-%d-%d" % [paths[0] + 1, paths[1] + 1, paths[2] + 1]
 
 
 func _compute_ending(paths: Array[int]) -> Dictionary:

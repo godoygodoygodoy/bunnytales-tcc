@@ -13,6 +13,8 @@ func _ready() -> void:
 
 	var sprite := Sprite2D.new()
 	sprite.texture = load("res://assets/textures/effects/galaxy_attack.png")
+	if not sprite.texture:
+		sprite.texture = load("res://assets/icons/icon.svg")
 	sprite.scale = Vector2(1.5, 1.5)
 	add_child(sprite)
 
