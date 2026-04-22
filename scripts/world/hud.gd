@@ -93,7 +93,7 @@ func _build_ui() -> void:
 
 	# ── Dica de controles ──────────────────────────────────────────────────
 	var hint := _label(Vector2(8.0, vp.y - 14.0), 10)
-	hint.text = "WASD mover | Shift dash | Q especial | E melee | R tiro | F loja"
+	hint.text = "WASD mover | Shift dash | C rolar | Q especial | E melee | R tiro | F loja"
 	hint.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8, 0.65))
 
 	_message_label = _label(Vector2(300.0, 18.0), 13)

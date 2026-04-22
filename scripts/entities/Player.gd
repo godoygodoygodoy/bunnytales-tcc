@@ -5,6 +5,7 @@ signal player_died()
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _col_shape: CollisionShape2D = $CollisionShape2D
+@onready var _camera: Camera2D = get_node_or_null("Camera2D")
 
 const SPEED: float = 300.0
 const JUMP_VELOCITY: float = -400.0
@@ -12,6 +13,13 @@ const DASH_SPEED: float = 600.0
 const DASH_DURATION: float = 0.2
 const DASH_COOLDOWN: float = 1.0
 const BASE_MAX_JUMPS: int = 2
+
+const ROLL_SPEED: float = 520.0
+const ROLL_DURATION: float = 0.32
+const ROLL_COOLDOWN: float = 0.55
+
+const DASH_SHAKE_DURATION: float = 0.12
+const DASH_SHAKE_INTENSITY: float = 4.0
 
 const INV_DURATION: float = 1.0
 
@@ -27,6 +35,15 @@ var dash_timer: float = 0.0
 var dash_cooldown_timer: float = 0.0
 var dash_direction: Vector2 = Vector2.RIGHT
 var jump_count: int = 0
+
+var is_rolling: bool = false
+var roll_timer: float = 0.0
+var roll_cooldown_timer: float = 0.0
+var roll_direction: float = 1.0
+var _roll_requested: bool = false
+
+var _dash_shake_timer: float = 0.0
+var _camera_base_pos: Vector2 = Vector2.ZERO
 
 var inv_timer: float = 0.0
 var galaxy_attack_cooldown_timer: float = 0.0
@@ -53,6 +70,8 @@ func _ready() -> void:
 			frames.add_frame(anim_name, icon_tex)
 		animated_sprite.sprite_frames = frames
 		animated_sprite.play("idle")
+	if _camera:
+		_camera_base_pos = _camera.position
 	emit_signal("hp_changed", hp, max_hp)
 
 
@@ -127,6 +146,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if shot_cooldown_timer <= 0.0 and _can_use_attack("projectile"):
 				_launch_shot()
 				shot_cooldown_timer = SHOT_COOLDOWN
+		KEY_C:
+			# Rolar no chão (esquiva). A execução real acontece no _physics_process.
+			_roll_requested = true
 
 
 func _physics_process(delta: float) -> void:
@@ -138,6 +160,10 @@ func _physics_process(delta: float) -> void:
 	shot_cooldown_timer = max(shot_cooldown_timer - delta, 0.0)
 	if inv_timer > 0.0:
 		inv_timer -= delta
+	if roll_cooldown_timer > 0.0:
+		roll_cooldown_timer = max(roll_cooldown_timer - delta, 0.0)
+	if _dash_shake_timer > 0.0:
+		_dash_shake_timer = max(_dash_shake_timer - delta, 0.0)
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -155,21 +181,46 @@ func _physics_process(delta: float) -> void:
 	if input_dir.length() > 0.0:
 		dash_direction = input_dir.normalized()
 
-	if Input.is_key_pressed(KEY_SHIFT) and not is_dashing and dash_cooldown_timer <= 0.0 and _can_dash():
+	# Inicia roll (somente no chão), independente do dash.
+	if _roll_requested:
+		_roll_requested = false
+		if is_on_floor() and not is_dashing and not is_rolling and roll_cooldown_timer <= 0.0:
+			is_rolling = true
+			roll_timer = ROLL_DURATION
+			roll_cooldown_timer = ROLL_COOLDOWN
+			var hx := Input.get_axis("move_left", "move_right")
+			if hx != 0.0:
+				roll_direction = sign(hx)
+			else:
+				roll_direction = _facing()
+			# I-frames durante o roll (esquiva).
+			inv_timer = max(inv_timer, ROLL_DURATION)
+
+	if Input.is_key_pressed(KEY_SHIFT) and not is_dashing and not is_rolling and dash_cooldown_timer <= 0.0 and _can_dash():
 		is_dashing = true
 		dash_timer = DASH_DURATION
 		dash_cooldown_timer = DASH_COOLDOWN * (0.8 if _dash_upgrade_level > 0 else 1.0)
+		# Tremida leve no início do dash
+		_dash_shake_timer = DASH_SHAKE_DURATION
 
 	if is_dashing:
 		dash_timer -= delta
 		velocity = dash_direction * DASH_SPEED
 		if dash_timer <= 0.0:
 			is_dashing = false
+	elif is_rolling:
+		roll_timer -= delta
+		velocity.x = roll_direction * ROLL_SPEED
+		# Mantém a gravidade padrão caso saia de uma quina.
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		if roll_timer <= 0.0:
+			is_rolling = false
 
 	if dash_cooldown_timer > 0.0:
 		dash_cooldown_timer -= delta
 
-	if not is_dashing:
+	if not is_dashing and not is_rolling:
 		var dir := Input.get_axis("move_left", "move_right")
 		if dir:
 			velocity.x = dir * SPEED
@@ -177,7 +228,20 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0.0, SPEED)
 
 	move_and_slide()
+	_update_dash_shake()
 	_update_animation()
+
+
+func _update_dash_shake() -> void:
+	if not _camera:
+		return
+	if _dash_shake_timer <= 0.0:
+		_camera.position = _camera_base_pos
+		return
+	# Jitter pequeno horizontal (sensação de vento)
+	var t := _dash_shake_timer / DASH_SHAKE_DURATION
+	var amp := DASH_SHAKE_INTENSITY * clamp(t, 0.0, 1.0)
+	_camera.position = _camera_base_pos + Vector2(randf_range(-amp, amp), randf_range(-amp * 0.35, amp * 0.35))
 
 
 func _update_animation() -> void:
@@ -186,6 +250,10 @@ func _update_animation() -> void:
 		animated_sprite.flip_h = horizontal < 0
 
 	if is_dashing:
+		if animated_sprite.animation != &"dash":
+			animated_sprite.play("dash")
+	elif is_rolling:
+		# Sem animação própria por enquanto; reutiliza a do dash.
 		if animated_sprite.animation != &"dash":
 			animated_sprite.play("dash")
 	elif not is_on_floor():
@@ -234,26 +302,45 @@ func _damage_multiplier() -> float:
 	return 1.0
 
 
+func _get_attack_direction() -> Vector2:
+	# Prioridade: se o player estiver apertando direção (WASD), usa ela.
+	# Caso contrário, segue o ponteiro do mouse.
+	var move_x := Input.get_axis("move_left", "move_right")
+	var move_y := Input.get_axis("move_up", "move_down")
+	var input_dir := Vector2(move_x, move_y)
+	if input_dir.length() > 0.0:
+		return input_dir.normalized()
+
+	var mouse_dir := get_global_mouse_position() - _body_center()
+	if mouse_dir.length() > 0.001:
+		return mouse_dir.normalized()
+
+	return Vector2(_facing(), 0.0)
+
+
 func _launch_galaxy_attack() -> void:
 	var attack = load("res://scripts/entities/galaxy_attack.gd").new()
-	attack.direction = _facing()
+	attack.direction = _get_attack_direction()
 	attack.damage = int(round(3.0 * _damage_multiplier()))
 	attack.global_position = _body_center()
 	get_parent().add_child(attack)
 
 
 func _launch_melee() -> void:
+	var dir := _get_attack_direction()
 	var attack = load("res://scripts/entities/melee_attack.gd").new()
 	attack.damage = int(round(2.0 * _damage_multiplier()))
-	attack.global_position = _body_center() + Vector2(85.0 * _facing(), 0.0)
+	attack.global_position = _body_center() + dir * 85.0
+	attack.rotation = dir.angle()
 	get_parent().add_child(attack)
 
 
 func _launch_shot() -> void:
+	var dir := _get_attack_direction()
 	var proj = load("res://scripts/entities/projectile.gd").new()
 	proj.damage = int(round(2.0 * _damage_multiplier()))
-	proj.direction = _facing()
-	proj.global_position = _body_center() + Vector2(50.0 * _facing(), 0.0)
+	proj.direction = dir
+	proj.global_position = _body_center() + dir * 50.0
 	get_parent().add_child(proj)
 
 

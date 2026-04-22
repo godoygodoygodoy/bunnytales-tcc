@@ -40,6 +40,8 @@ var is_dead: bool = false
 var _sprite: Sprite2D
 var _hp_bar: ColorRect
 
+var TongueAttackScript = preload("res://scripts/entities/tongue_attack.gd")
+
 func _ready() -> void:
 	add_to_group("enemy")
 	patrol_origin = global_position
@@ -47,8 +49,14 @@ func _ready() -> void:
 	# ---- Visual placeholder ----
 	_sprite = Sprite2D.new()
 	_sprite.texture = load("res://assets/icons/icon.svg")
-	_sprite.scale = Vector2(0.6, 0.6)
-	_sprite.modulate = Color(1.0, 0.28, 0.28) if enemy_type == "melee" else Color(1.0, 0.55, 0.25)
+	_sprite.scale = Vector2(0.65, 0.65) if enemy_type == "ranged" else Vector2(0.6, 0.6)
+	# Placeholder de cores: melee (vermelho) | ranged=sapo (verde) | flying (laranja)
+	if enemy_type == "melee":
+		_sprite.modulate = Color(1.0, 0.28, 0.28)
+	elif enemy_type == "ranged":
+		_sprite.modulate = Color(0.35, 0.95, 0.45)
+	else:
+		_sprite.modulate = Color(1.0, 0.55, 0.25)
 	add_child(_sprite)
 
 	# ---- Barra de HP ----
@@ -104,15 +112,17 @@ func configure_for_phase(phase: int, type: String = "melee") -> void:
 	hp = hp_max
 
 
-func _spawn_ranged_projectile(player: Node2D) -> void:
-	var projectile: Area2D = load("res://scripts/entities/enemy_projectile.gd").new()
-	projectile.global_position = global_position + Vector2(0.0, -16.0)
-	var x_dir: float = sign(player.global_position.x - global_position.x)
-	if x_dir == 0.0:
-		x_dir = -1.0 if _sprite and _sprite.flip_h else 1.0
-	projectile.direction = Vector2(x_dir, 0.0)
-	projectile.damage = 1 + max(phase_difficulty - 1, 0)
-	get_parent().add_child(projectile)
+func _spawn_ranged_tongue(player: Node2D) -> void:
+	# Língua mira na direção do player (tipo mira do mouse do player).
+	var tongue: Node2D = TongueAttackScript.new()
+	tongue.global_position = global_position + Vector2(0.0, -18.0)
+	var dir := (player.global_position - tongue.global_position)
+	if dir.length() < 0.001:
+		dir = Vector2.LEFT if (_sprite and _sprite.flip_h) else Vector2.RIGHT
+	tongue.direction = dir.normalized()
+	tongue.target_length = clamp(dir.length(), 40.0, ranged_distance * 1.35)
+	tongue.damage = 1 + max(phase_difficulty - 1, 0)
+	get_parent().add_child(tongue)
 
 
 func _on_damage_body_entered(body: Node) -> void:
@@ -158,7 +168,7 @@ func _physics_process(delta: float) -> void:
 
 				if ranged_timer <= 0.0:
 					ranged_timer = ranged_cooldown
-					_spawn_ranged_projectile(player)
+					_spawn_ranged_tongue(player)
 		else:
 			if global_position.x > patrol_origin.x + patrol_range:
 				facing = -1.0
@@ -173,7 +183,12 @@ func _physics_process(delta: float) -> void:
 		velocity.x = facing * speed_patrol
 
 	if _sprite:
-		_sprite.flip_h = facing < 0
+		# Ranged (sapo) mantém a lógica de recuar/avançar, mas olha pro player.
+		if enemy_type == "ranged" and player:
+			var look := sign(player.global_position.x - global_position.x)
+			_sprite.flip_h = look < 0
+		else:
+			_sprite.flip_h = facing < 0
 
 	move_and_slide()
 func take_damage(amount: int) -> void:
