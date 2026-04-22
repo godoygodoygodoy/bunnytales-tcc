@@ -239,8 +239,8 @@ func _update_dash_shake() -> void:
 		_camera.position = _camera_base_pos
 		return
 	# Jitter pequeno horizontal (sensação de vento)
-	var t := _dash_shake_timer / DASH_SHAKE_DURATION
-	var amp := DASH_SHAKE_INTENSITY * clamp(t, 0.0, 1.0)
+	var t: float = _dash_shake_timer / DASH_SHAKE_DURATION
+	var amp: float = DASH_SHAKE_INTENSITY * clampf(t, 0.0, 1.0)
 	_camera.position = _camera_base_pos + Vector2(randf_range(-amp, amp), randf_range(-amp * 0.35, amp * 0.35))
 
 
